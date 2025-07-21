@@ -7,6 +7,14 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import ChatPromptTemplate
 
+# Import necessary modules for document loading and vector store
+from langchain.document_loaders import TextLoader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import FAISS
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.chains import RetrievalQA
+
 # Load API key
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -50,18 +58,54 @@ user_question = st.chat_input("Type your question here...")
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
 
-if user_question:
-    # Format the prompt
-    prompt = prompt_template.format_messages(question=user_question)
 
-    # Run model
+st.sidebar.header("📄 Document Q&A")
+uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
+
+use_pdf_qa = False
+retrieval_chain = None
+
+if uploaded_file:
+    with st.spinner("Processing document..."):
+        # Save uploaded PDF temporarily
+        temp_path = os.path.join("temp.pdf")
+        with open(temp_path, "wb") as f:
+            f.write(uploaded_file.read())
+
+        # Load and split the PDF
+        loader = PyPDFLoader(temp_path)
+        pages = loader.load()
+        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        texts = text_splitter.split_documents(pages)
+
+        # Create vectorstore
+        embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+        vectordb = FAISS.from_documents(texts, embeddings)
+
+        # Create a retrieval chain
+        retrieval_chain = RetrievalQA.from_chain_type(
+            llm=llm,
+            retriever=vectordb.as_retriever(),
+            return_source_documents=True
+        )
+
+        use_pdf_qa = True
+        st.sidebar.success("PDF processed! Now ask questions in chat.")
+
+
+
+if user_question:
     try:
-        response = llm.invoke(prompt)
-        bot_reply = response.content
+        if use_pdf_qa and retrieval_chain:
+            result = retrieval_chain.invoke({"query": user_question})
+            bot_reply = result["result"]
+        else:
+            prompt = prompt_template.format_messages(question=user_question)
+            response = llm.invoke(prompt)
+            bot_reply = response.content
     except Exception as e:
         bot_reply = f"❌ Error: {str(e)}"
 
-    # Save messages to chat history
     st.session_state.chat_history.append(("user", user_question))
     st.session_state.chat_history.append(("bot", bot_reply))
 
