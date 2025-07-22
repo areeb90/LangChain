@@ -109,6 +109,7 @@ if user_question:
     st.session_state.chat_history.append(("user", user_question))
     st.session_state.chat_history.append(("bot", bot_reply))
 
+
 # Display chat
 for role, message in st.session_state.chat_history:
     with st.chat_message(role):
