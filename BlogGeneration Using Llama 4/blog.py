@@ -1,3 +1,7 @@
+#  I used a Python langchain app to create blogs. The app allows me to input a topic, specify the number of words, and choose the target audience. With just a click, the app generates a blog on the given topic in the specified number of words for the selected audience. It's a great tool for researchers, data scientists, and common people who want to quickly generate quality content.
+
+
+
 import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
