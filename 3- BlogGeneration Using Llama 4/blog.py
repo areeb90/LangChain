@@ -19,7 +19,7 @@ def getLLamaresponse(input_text, no_words, blog_style):
     llm = ChatOpenAI(
         model="gpt-3.5-turbo-0125",
         temperature=0.7,
-        openai_api_key="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"
+        openai_api_key="sk-proj-EROcWdHoy8v0czczzObUR18QAOPRTQtfdshsdkfhdskfhsiodfhihgsoiqewoil3UYhCuBVvaubhcBAxTLEwcK0-bY14byv42zyIKTKKmuFRRGJU6oA"
     )
     
     # Simulating a response from Llama 4
