@@ -7,7 +7,7 @@ import google.generativeai as genai
 load_dotenv()  # Load API keys from .env file
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyAhpZjC8uHToOaaUa4qwMDUOhP5Se0cqsY")
+genai.configure(api_key="AIzafsdufgshiufgdsfgeiufhgwrigjlkP5Se0cqsY")
 
 # Initialize Gemini Vision model
 model = genai.GenerativeModel("models/gemini-2.5-pro")

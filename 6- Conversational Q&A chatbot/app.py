@@ -9,7 +9,7 @@ st.set_page_config(page_title="Conversational Q&A Chatbot")
 st.header("Hey, Let's Chat")
 
 
-chat=ChatOpenAI(openai_api_key= "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",
+chat=ChatOpenAI(openai_api_key= "sk-proj-EROcWdHoy8v0czczzObUR18_kn02Uk8R7T3UMppUswl3UYhCuBVvaubhcBAxTLEwcK0-bY14byv42zyIKTKKmuFRRGJU6oA",
                 model_name="gpt-3.5-turbo",)
 
 
