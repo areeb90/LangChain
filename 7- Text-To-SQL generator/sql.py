@@ -5,7 +5,7 @@ import google.generativeai as genai
 import pandas as pd
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyAhpZjC8uHToOaaUa4qwMDUOhP5Se0cqsY")
+genai.configure(api_key="AIzaghsguhsdiufshfusdhfiugwiusghiufhsiqsY")
 
 # Initialize session state for chat history
 if "history" not in st.session_state:
